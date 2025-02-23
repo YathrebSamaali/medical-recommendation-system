@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AI Health System Results</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <!-- jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        /* Custom styles for equal column width */
+        .equal-width th, .equal-width td {
+            width: 16.66%; /* 100% divided by 6 columns */
+        }
+
+        /* Ensure the table is responsive */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        /* Center the "Predicted Disease" column */
+        .center-column {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        /* Add some space between buttons */
+        .button-group {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    {% if predicted_disease %}
+    <div class="container-fluid mt-4"> <!-- Use container-fluid for full width -->
+        <!-- Title -->
+        <h1 class="text-center mb-4">Our AI System Results</h1>
+
+        <!-- Button Group aligned to the right -->
+        <div class="text-right mb-4 button-group">
+            <!-- Save Recommendation Button -->
+            <button id="save-recommendation" class="btn btn-success">
+                <i class="fas fa-save"></i> Enregistrer la recommandation
+            </button>
+
+            <!-- Button for scheduling an appointment -->
+            <button id="appointment-button" class="btn btn-primary ml-2">
+                <i class="fas fa-calendar-alt"></i> Prendre rendez-vous avec un spécialiste
+            </button>
+
+            <!-- Button for online consultation -->
+            <button id="teleconsultation-button" class="btn btn-info ml-2">
+                <i class="fas fa-video"></i> Discuter avec un médecin en ligne
+            </button>
+        </div>
+
+        <!-- Table Section -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped equal-width" id="content-to-pdf">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" class="center-column"><i class="fas fa-virus"></i> Predicted Disease</th>
+                        <th scope="col" class="text-center"><i class="fas fa-book"></i> Description</th>
+                        <th scope="col" class="text-center"><i class="fas fa-exclamation-triangle"></i> Precautions</th>
+                        <th scope="col" class="text-center"><i class="fas fa-pills"></i> Medications</th>
+                        <th scope="col" class="text-center"><i class="fas fa-dumbbell"></i> Workouts</th>
+                        <th scope="col" class="text-center"><i class="fas fa-utensils"></i> Diets</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <!-- Predicted Disease -->
+                        <td class="center-column">{{ predicted_disease }}</td>
+
+                        <!-- Description -->
+                        <td>{{ dis_des }}</td>
+
+                        <!-- Precautions -->
+                        <td>
+                            <ol class="list-unstyled">
+                                {% for precaution in my_precautions %}
+                                    <li>{{ loop.index }}. {{ precaution }}</li>
+                                {% endfor %}
+                            </ol>
+                        </td>
+
+                        <!-- Medications -->
+                        <td>
+                            <ol class="list-unstyled">
+                                {% for med in medications %}
+                                    <li>{{ loop.index }}. {{ med }}</li>
+                                {% endfor %}
+                            </ol>
+                        </td>
+
+                        <!-- Workouts -->
+                        <td>
+                            <ol class="list-unstyled">
+                                {% for workout_item in workout %}
+                                    <li>{{ loop.index }}. {{ workout_item }}</li>
+                                {% endfor %}
+                            </ol>
+                        </td>
+
+                        <!-- Diets -->
+                        <td>
+                            <ol class="list-unstyled">
+                                {% for diet in my_diet %}
+                                    <li>{{ loop.index }}. {{ diet }}</li>
+                                {% endfor %}
+                            </ol>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Function to handle Save Recommendation Button
+        document.getElementById('save-recommendation').addEventListener('click', function() {
+            alert('La recommandation a été enregistrée!');
+        });
+
+        // Function to handle Appointment Button
+        document.getElementById('appointment-button').addEventListener('click', function() {
+            // Simulate opening a calendar or appointment booking page
+            window.location.href = "https://calendly.com"; // Example link to scheduling service
+        });
+
+        // Function to handle Teleconsultation Button
+        document.getElementById('teleconsultation-button').addEventListener('click', function() {
+            // Simulate starting a video call with a doctor (this could link to a teleconsultation platform)
+            window.location.href = "https://www.doxy.me"; // Example link to a telemedicine platform
+        });
+    </script>
+</body>
+</html>
